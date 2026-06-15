@@ -63,7 +63,7 @@ for d in "$TODAY" "$TOMORROW"; do
       --max-time 20 \
       --retry 2 --retry-delay 3 \
       -sS \
-      --user-agent "PadelGardenTracker/1.0" \
+      --user-agent "" \
       -w "%{http_code}" \
       -o "$TMP" \
       "$URL" 2>&1 || echo "000")
@@ -127,8 +127,14 @@ for entry in "${CLUBS[@]}"; do
   # Controlled redirects: still https-only, capped at 3 hops (locale redirects).
   AURL="https://playtomic.com/clubs/${slug}"
   A_CODE=$(curl --proto "=https" --tlsv1.2 --location --max-redirs 3 --max-time 25 --retry 2 --retry-delay 3 -sS \
-    --user-agent "Mozilla/5.0 (X11; Linux x86_64) PadelGardenTracker/1.0" \
-    -w "%{http_code}" -o "$ACAD_TMP" "$AURL" 2>&1 || echo "000")
+       --user-agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" \
+       -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8" \
+       -H "Accept-Language: en-GB,en;q=0.9" \
+       -H "Sec-CH-UA: \"Chromium\";v=\"126\", \"Not.A/Brand\";v=\"24\", \"Google Chrome\";v=\"126\"" \
+       -H "Sec-CH-UA-Mobile: ?0" \
+       -H "Sec-CH-UA-Platform: \"macOS\"" \
+       -H "Upgrade-Insecure-Requests: 1" \
+       -w "%{http_code}" -o "$ACAD_TMP" "$AURL" 2>&1 || echo "000")
   if [ "$A_CODE" = "200" ] && [ -s "$ACAD_TMP" ]; then
     ACAD_ARG="$ACAD_TMP"
   else
