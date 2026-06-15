@@ -26,15 +26,20 @@ CLUBS=(
   "east-dorset:da25ad46-c6d2-4266-b9da-2a00863b1919:east-dorset-padel"
 )
 
-log() { echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] $*"; }   # -> stdout, captured by Actions
+log() { echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] $*"; }
 log "Run started (cloud) — TZ=${TZ:-unset}"
 
 # Dates in the workflow's TZ (set to Europe/London in the YAML).
 TODAY=$(date "+%Y-%m-%d")
-TOMORROW=$(date -d "+1 day" "+%Y-%m-%d")   # GNU date syntax (was -v+1d on macOS)
+TOMORROW=$(date -d "+1 day" "+%Y-%m-%d")
 
 is_uuid() { [[ "$1" =~ ^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$ ]]; }
 is_slug() { [[ "$1" =~ ^[a-z0-9-]+$ ]]; }
+
+# Real-browser UA + headers — Cloudflare started 403'ing PadelGardenTracker/1.0
+# on api.playtomic.io on 2026-06-15 (same heuristic that already blocked the
+# academy HTML scrape on playtomic.com).
+BROWSER_UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
 
 # ---- Availability fetch loop ----------------------------------------------
 SUCCESS=0
@@ -63,7 +68,11 @@ for d in "$TODAY" "$TOMORROW"; do
       --max-time 20 \
       --retry 2 --retry-delay 3 \
       -sS \
-      --user-agent "" \
+      --user-agent "$BROWSER_UA" \
+      -H "Accept: application/json, text/plain, */*" \
+      -H "Accept-Language: en-GB,en;q=0.9" \
+      -H "Origin: https://playtomic.com" \
+      -H "Referer: https://playtomic.com/" \
       -w "%{http_code}" \
       -o "$TMP" \
       "$URL" 2>&1 || echo "000")
@@ -83,7 +92,7 @@ for d in "$TODAY" "$TOMORROW"; do
     fi
 
     mv "$TMP" "$OUT"
-    bytes=$(stat -c%s "$OUT")   # GNU stat (was stat -f%z on macOS)
+    bytes=$(stat -c%s "$OUT")
     log "OK   $d $id (${bytes} bytes)"
     SUCCESS=$((SUCCESS+1))
   done
@@ -114,7 +123,11 @@ for entry in "${CLUBS[@]}"; do
   # --- Tournaments (JSON API) ---
   TURL="https://api.playtomic.io/v1/tournaments?tenant_id=${tid}&local_start_min=${TODAY}T00:00:00&local_start_max=${TOMORROW}T23:59:59"
   T_CODE=$(curl --proto "=https" --tlsv1.2 --max-time 20 --retry 2 --retry-delay 3 -sS \
-    --user-agent "PadelGardenTracker/1.0" \
+    --user-agent "$BROWSER_UA" \
+    -H "Accept: application/json, text/plain, */*" \
+    -H "Accept-Language: en-GB,en;q=0.9" \
+    -H "Origin: https://playtomic.com" \
+    -H "Referer: https://playtomic.com/" \
     -w "%{http_code}" -o "$TOUR_TMP" "$TURL" 2>&1 || echo "000")
   if [ "$T_CODE" = "200" ] && python3 -c "import json; json.load(open('$TOUR_TMP'))" 2>/dev/null; then
     TOUR_ARG="$TOUR_TMP"
@@ -127,14 +140,14 @@ for entry in "${CLUBS[@]}"; do
   # Controlled redirects: still https-only, capped at 3 hops (locale redirects).
   AURL="https://playtomic.com/clubs/${slug}"
   A_CODE=$(curl --proto "=https" --tlsv1.2 --location --max-redirs 3 --max-time 25 --retry 2 --retry-delay 3 -sS \
-       --user-agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" \
-       -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8" \
-       -H "Accept-Language: en-GB,en;q=0.9" \
-       -H "Sec-CH-UA: \"Chromium\";v=\"126\", \"Not.A/Brand\";v=\"24\", \"Google Chrome\";v=\"126\"" \
-       -H "Sec-CH-UA-Mobile: ?0" \
-       -H "Sec-CH-UA-Platform: \"macOS\"" \
-       -H "Upgrade-Insecure-Requests: 1" \
-       -w "%{http_code}" -o "$ACAD_TMP" "$AURL" 2>&1 || echo "000")
+    --user-agent "$BROWSER_UA" \
+    -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8" \
+    -H "Accept-Language: en-GB,en;q=0.9" \
+    -H "Sec-CH-UA: \"Chromium\";v=\"126\", \"Not.A/Brand\";v=\"24\", \"Google Chrome\";v=\"126\"" \
+    -H "Sec-CH-UA-Mobile: ?0" \
+    -H "Sec-CH-UA-Platform: \"macOS\"" \
+    -H "Upgrade-Insecure-Requests: 1" \
+    -w "%{http_code}" -o "$ACAD_TMP" "$AURL" 2>&1 || echo "000")
   if [ "$A_CODE" = "200" ] && [ -s "$ACAD_TMP" ]; then
     ACAD_ARG="$ACAD_TMP"
   else
