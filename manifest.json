@@ -1,76 +1,111 @@
 {
-  "generated_iso": "2026-06-14T12:12:51.924510+00:00",
-  "snapshot_count": 14,
+  "generated_iso": "2026-06-15T13:06:16.186065+00:00",
+  "snapshot_count": 21,
   "snapshots": [
     {
       "file": "2026-06-14_centre-court-st-helens.json",
       "size_bytes": 2280,
-      "modified_iso": "2026-06-14T12:12:49.253187+00:00"
+      "modified_iso": "2026-06-15T13:06:12.686782+00:00"
     },
     {
       "file": "2026-06-14_city-padel-exeter.json",
       "size_bytes": 1121,
-      "modified_iso": "2026-06-14T12:12:49.025721+00:00"
+      "modified_iso": "2026-06-15T13:06:12.687215+00:00"
     },
     {
       "file": "2026-06-14_east-dorset.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-14T12:12:49.994508+00:00"
+      "modified_iso": "2026-06-15T13:06:12.687215+00:00"
     },
     {
       "file": "2026-06-14_harrogate-spa.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-14T12:12:48.573260+00:00"
+      "modified_iso": "2026-06-15T13:06:12.687215+00:00"
     },
     {
       "file": "2026-06-14_padelhub-southampton.json",
       "size_bytes": 1772,
-      "modified_iso": "2026-06-14T12:12:49.768133+00:00"
+      "modified_iso": "2026-06-15T13:06:12.687215+00:00"
     },
     {
       "file": "2026-06-14_surge-harrogate.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-14T12:12:48.801047+00:00"
+      "modified_iso": "2026-06-15T13:06:12.687215+00:00"
     },
     {
       "file": "2026-06-14_wetherby.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-14T12:12:49.484528+00:00"
+      "modified_iso": "2026-06-15T13:06:12.687215+00:00"
     },
     {
       "file": "2026-06-15_centre-court-st-helens.json",
-      "size_bytes": 9690,
-      "modified_iso": "2026-06-14T12:12:51.111112+00:00"
+      "size_bytes": 1425,
+      "modified_iso": "2026-06-15T13:06:13.868770+00:00"
     },
     {
       "file": "2026-06-15_city-padel-exeter.json",
-      "size_bytes": 1862,
-      "modified_iso": "2026-06-14T12:12:50.889466+00:00"
+      "size_bytes": 1060,
+      "modified_iso": "2026-06-15T13:06:13.627906+00:00"
     },
     {
       "file": "2026-06-15_east-dorset.json",
-      "size_bytes": 149,
-      "modified_iso": "2026-06-14T12:12:51.871062+00:00"
+      "size_bytes": 2,
+      "modified_iso": "2026-06-15T13:06:14.551384+00:00"
     },
     {
       "file": "2026-06-15_harrogate-spa.json",
-      "size_bytes": 354,
-      "modified_iso": "2026-06-14T12:12:50.316588+00:00"
+      "size_bytes": 2,
+      "modified_iso": "2026-06-15T13:06:12.946769+00:00"
     },
     {
       "file": "2026-06-15_padelhub-southampton.json",
-      "size_bytes": 7163,
-      "modified_iso": "2026-06-14T12:12:51.651082+00:00"
+      "size_bytes": 5851,
+      "modified_iso": "2026-06-15T13:06:14.326699+00:00"
     },
     {
       "file": "2026-06-15_surge-harrogate.json",
-      "size_bytes": 1630,
-      "modified_iso": "2026-06-14T12:12:50.577245+00:00"
+      "size_bytes": 969,
+      "modified_iso": "2026-06-15T13:06:13.363907+00:00"
     },
     {
       "file": "2026-06-15_wetherby.json",
-      "size_bytes": 3241,
-      "modified_iso": "2026-06-14T12:12:51.403186+00:00"
+      "size_bytes": 2,
+      "modified_iso": "2026-06-15T13:06:14.098272+00:00"
+    },
+    {
+      "file": "2026-06-16_centre-court-st-helens.json",
+      "size_bytes": 9063,
+      "modified_iso": "2026-06-15T13:06:15.482546+00:00"
+    },
+    {
+      "file": "2026-06-16_city-padel-exeter.json",
+      "size_bytes": 5512,
+      "modified_iso": "2026-06-15T13:06:15.258768+00:00"
+    },
+    {
+      "file": "2026-06-16_east-dorset.json",
+      "size_bytes": 149,
+      "modified_iso": "2026-06-15T13:06:16.135684+00:00"
+    },
+    {
+      "file": "2026-06-16_harrogate-spa.json",
+      "size_bytes": 2,
+      "modified_iso": "2026-06-15T13:06:14.761513+00:00"
+    },
+    {
+      "file": "2026-06-16_padelhub-southampton.json",
+      "size_bytes": 6582,
+      "modified_iso": "2026-06-15T13:06:15.921503+00:00"
+    },
+    {
+      "file": "2026-06-16_surge-harrogate.json",
+      "size_bytes": 1516,
+      "modified_iso": "2026-06-15T13:06:15.006786+00:00"
+    },
+    {
+      "file": "2026-06-16_wetherby.json",
+      "size_bytes": 4163,
+      "modified_iso": "2026-06-15T13:06:15.705165+00:00"
     }
   ]
 }
