@@ -1,251 +1,321 @@
 {
-  "generated_iso": "2026-06-16T21:37:03.143550+00:00",
-  "snapshot_count": 49,
+  "generated_iso": "2026-06-17T12:42:44.207789+00:00",
+  "snapshot_count": 63,
   "snapshots": [
     {
       "file": "2026-06-14_centre-court-st-helens.json",
       "size_bytes": 2280,
-      "modified_iso": "2026-06-16T21:36:52.039042+00:00"
+      "modified_iso": "2026-06-17T12:42:31.053758+00:00"
     },
     {
       "file": "2026-06-14_city-padel-exeter.json",
       "size_bytes": 1121,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-14_east-dorset.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-14_harrogate-spa.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-14_padelhub-southampton.json",
       "size_bytes": 1772,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-14_surge-harrogate.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-14_wetherby.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-15_centre-court-st-helens.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-15_centre-court-st-helens_events.json",
       "size_bytes": 220,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-15_city-padel-exeter.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-15_city-padel-exeter_events.json",
       "size_bytes": 215,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-15_east-dorset.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-15_east-dorset_events.json",
       "size_bytes": 209,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-15_harrogate-spa.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-15_harrogate-spa_events.json",
       "size_bytes": 211,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-15_padelhub-southampton.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-15_padelhub-southampton_events.json",
       "size_bytes": 218,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-15_surge-harrogate.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-15_surge-harrogate_events.json",
       "size_bytes": 213,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-15_wetherby.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-15_wetherby_events.json",
       "size_bytes": 206,
-      "modified_iso": "2026-06-16T21:36:52.039520+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-16_centre-court-st-helens.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:53.316309+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-16_centre-court-st-helens_events.json",
       "size_bytes": 220,
-      "modified_iso": "2026-06-16T21:37:00.056999+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-16_city-padel-exeter.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:53.048759+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054209+00:00"
     },
     {
       "file": "2026-06-16_city-padel-exeter_events.json",
       "size_bytes": 215,
-      "modified_iso": "2026-06-16T21:36:59.574505+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054756+00:00"
     },
     {
       "file": "2026-06-16_east-dorset.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:53.964149+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054756+00:00"
     },
     {
       "file": "2026-06-16_east-dorset_events.json",
       "size_bytes": 209,
-      "modified_iso": "2026-06-16T21:37:03.114268+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054756+00:00"
     },
     {
       "file": "2026-06-16_harrogate-spa.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:52.337386+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054756+00:00"
     },
     {
       "file": "2026-06-16_harrogate-spa_events.json",
       "size_bytes": 211,
-      "modified_iso": "2026-06-16T21:36:56.992429+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054756+00:00"
     },
     {
       "file": "2026-06-16_padelhub-southampton.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:53.761394+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054756+00:00"
     },
     {
       "file": "2026-06-16_padelhub-southampton_events.json",
       "size_bytes": 218,
-      "modified_iso": "2026-06-16T21:37:02.074293+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054756+00:00"
     },
     {
       "file": "2026-06-16_surge-harrogate.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:52.637495+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054756+00:00"
     },
     {
       "file": "2026-06-16_surge-harrogate_events.json",
       "size_bytes": 213,
-      "modified_iso": "2026-06-16T21:36:58.574892+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054756+00:00"
     },
     {
       "file": "2026-06-16_wetherby.json",
       "size_bytes": 2,
-      "modified_iso": "2026-06-16T21:36:53.544395+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054756+00:00"
     },
     {
       "file": "2026-06-16_wetherby_events.json",
       "size_bytes": 206,
-      "modified_iso": "2026-06-16T21:37:01.250196+00:00"
+      "modified_iso": "2026-06-17T12:42:31.054756+00:00"
     },
     {
       "file": "2026-06-17_centre-court-st-helens.json",
-      "size_bytes": 9747,
-      "modified_iso": "2026-06-16T21:36:55.117805+00:00"
+      "size_bytes": 2337,
+      "modified_iso": "2026-06-17T12:42:32.511377+00:00"
     },
     {
       "file": "2026-06-17_centre-court-st-helens_events.json",
       "size_bytes": 220,
-      "modified_iso": "2026-06-16T21:37:00.057195+00:00"
+      "modified_iso": "2026-06-17T12:42:40.724036+00:00"
     },
     {
       "file": "2026-06-17_city-padel-exeter.json",
-      "size_bytes": 4624,
-      "modified_iso": "2026-06-16T21:36:54.903328+00:00"
+      "size_bytes": 2794,
+      "modified_iso": "2026-06-17T12:42:32.234340+00:00"
     },
     {
       "file": "2026-06-17_city-padel-exeter_events.json",
       "size_bytes": 215,
-      "modified_iso": "2026-06-16T21:36:59.574795+00:00"
+      "modified_iso": "2026-06-17T12:42:40.365993+00:00"
     },
     {
       "file": "2026-06-17_east-dorset.json",
-      "size_bytes": 445,
-      "modified_iso": "2026-06-16T21:36:56.013481+00:00"
+      "size_bytes": 149,
+      "modified_iso": "2026-06-17T12:42:33.580388+00:00"
     },
     {
       "file": "2026-06-17_east-dorset_events.json",
       "size_bytes": 209,
-      "modified_iso": "2026-06-16T21:37:03.114524+00:00"
+      "modified_iso": "2026-06-17T12:42:44.171416+00:00"
     },
     {
       "file": "2026-06-17_harrogate-spa.json",
-      "size_bytes": 354,
-      "modified_iso": "2026-06-16T21:36:54.182947+00:00"
+      "size_bytes": 2,
+      "modified_iso": "2026-06-17T12:42:31.421792+00:00"
     },
     {
       "file": "2026-06-17_harrogate-spa_events.json",
       "size_bytes": 211,
-      "modified_iso": "2026-06-16T21:36:56.992678+00:00"
+      "modified_iso": "2026-06-17T12:42:37.097484+00:00"
     },
     {
       "file": "2026-06-17_padelhub-southampton.json",
-      "size_bytes": 4815,
-      "modified_iso": "2026-06-16T21:36:55.806749+00:00"
+      "size_bytes": 4416,
+      "modified_iso": "2026-06-17T12:42:33.163805+00:00"
     },
     {
       "file": "2026-06-17_padelhub-southampton_events.json",
       "size_bytes": 218,
-      "modified_iso": "2026-06-16T21:37:02.074538+00:00"
+      "modified_iso": "2026-06-17T12:42:43.300508+00:00"
     },
     {
       "file": "2026-06-17_surge-harrogate.json",
-      "size_bytes": 1231,
-      "modified_iso": "2026-06-16T21:36:54.479435+00:00"
+      "size_bytes": 1060,
+      "modified_iso": "2026-06-17T12:42:31.926235+00:00"
     },
     {
       "file": "2026-06-17_surge-harrogate_events.json",
       "size_bytes": 213,
-      "modified_iso": "2026-06-16T21:36:58.575195+00:00"
+      "modified_iso": "2026-06-17T12:42:38.865053+00:00"
     },
     {
       "file": "2026-06-17_wetherby.json",
-      "size_bytes": 3354,
-      "modified_iso": "2026-06-16T21:36:55.358422+00:00"
+      "size_bytes": 1232,
+      "modified_iso": "2026-06-17T12:42:32.852494+00:00"
     },
     {
       "file": "2026-06-17_wetherby_events.json",
       "size_bytes": 206,
-      "modified_iso": "2026-06-16T21:37:01.250490+00:00"
+      "modified_iso": "2026-06-17T12:42:42.092731+00:00"
+    },
+    {
+      "file": "2026-06-18_centre-court-st-helens.json",
+      "size_bytes": 9348,
+      "modified_iso": "2026-06-17T12:42:34.841690+00:00"
+    },
+    {
+      "file": "2026-06-18_centre-court-st-helens_events.json",
+      "size_bytes": 220,
+      "modified_iso": "2026-06-17T12:42:40.724231+00:00"
+    },
+    {
+      "file": "2026-06-18_city-padel-exeter.json",
+      "size_bytes": 3643,
+      "modified_iso": "2026-06-17T12:42:34.474392+00:00"
+    },
+    {
+      "file": "2026-06-18_city-padel-exeter_events.json",
+      "size_bytes": 215,
+      "modified_iso": "2026-06-17T12:42:40.366287+00:00"
+    },
+    {
+      "file": "2026-06-18_east-dorset.json",
+      "size_bytes": 2,
+      "modified_iso": "2026-06-17T12:42:35.746828+00:00"
+    },
+    {
+      "file": "2026-06-18_east-dorset_events.json",
+      "size_bytes": 209,
+      "modified_iso": "2026-06-17T12:42:44.171703+00:00"
+    },
+    {
+      "file": "2026-06-18_harrogate-spa.json",
+      "size_bytes": 411,
+      "modified_iso": "2026-06-17T12:42:33.863733+00:00"
+    },
+    {
+      "file": "2026-06-18_harrogate-spa_events.json",
+      "size_bytes": 211,
+      "modified_iso": "2026-06-17T12:42:37.097707+00:00"
+    },
+    {
+      "file": "2026-06-18_padelhub-southampton.json",
+      "size_bytes": 6524,
+      "modified_iso": "2026-06-17T12:42:35.475156+00:00"
+    },
+    {
+      "file": "2026-06-18_padelhub-southampton_events.json",
+      "size_bytes": 218,
+      "modified_iso": "2026-06-17T12:42:43.300783+00:00"
+    },
+    {
+      "file": "2026-06-18_surge-harrogate.json",
+      "size_bytes": 1402,
+      "modified_iso": "2026-06-17T12:42:34.153861+00:00"
+    },
+    {
+      "file": "2026-06-18_surge-harrogate_events.json",
+      "size_bytes": 213,
+      "modified_iso": "2026-06-17T12:42:38.865366+00:00"
+    },
+    {
+      "file": "2026-06-18_wetherby.json",
+      "size_bytes": 3299,
+      "modified_iso": "2026-06-17T12:42:35.190758+00:00"
+    },
+    {
+      "file": "2026-06-18_wetherby_events.json",
+      "size_bytes": 206,
+      "modified_iso": "2026-06-17T12:42:42.092997+00:00"
     }
   ]
 }
