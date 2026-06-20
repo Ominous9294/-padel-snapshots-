@@ -1,7 +1,8 @@
 # Place this file in the repo at:  .github/workflows/fetch.yml
-# It runs your padel fetcher on GitHub's always-on servers and commits the
-# JSON back to the repo. No secrets needed — Playtomic is a public endpoint
-# and GitHub provides the push token automatically.
+# It runs your padel fetcher on GitHub's always-on servers, computes the
+# occupancy rows AT capture time, and commits both the raw JSON and the
+# computed rows back to the repo. No secrets needed — Playtomic is a public
+# endpoint and GitHub provides the push token automatically.
 
 name: padel-fetch
 
@@ -9,9 +10,19 @@ on:
   schedule:
     # Times are UTC. GitHub cron is best-effort and can drift a few minutes,
     # so these are set ~40 min before the tracker reads, with buffer.
-    - cron: "50 10 * * *"   # ~11:50 Europe/London (BST) — feeds the midday read
-    - cron: "50 21 * * *"   # ~22:50 Europe/London (BST) — feeds the evening read
-  workflow_dispatch: {}      # lets you run it manually from the Actions tab
+    - cron: "50 10 * * *"   # ~11:50 Europe/London (BST) — midday: AFTERNOON window, today
+    - cron: "50 21 * * *"   # ~22:50 Europe/London (BST) — evening: MORNING window, tomorrow
+  workflow_dispatch:
+    # Manual run: optionally force a specific window/date (otherwise auto by hour).
+    inputs:
+      window:
+        description: "morning | afternoon (blank = auto by UTC hour)"
+        required: false
+        default: ""
+      date:
+        description: "YYYY-MM-DD (blank = auto: today/tomorrow)"
+        required: false
+        default: ""
 
 # Allow the job to push the new snapshots back to the repo.
 permissions:
@@ -36,14 +47,22 @@ jobs:
           chmod +x ./fetch-ci.sh
           ./fetch-ci.sh
 
-      - name: Commit & push snapshots
+      - name: Compute occupancy rows (point-in-time, at capture)
+        env:
+          TZ: Europe/London
+          WINDOW: ${{ github.event.inputs.window }}
+          DATE: ${{ github.event.inputs.date }}
+        run: |
+          python3 ./compute_rows.py
+
+      - name: Commit & push snapshots + rows
         run: |
           git config user.name  "padel-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add snapshots manifest.json
+          git add snapshots manifest.json occupancy_rows.json
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "snapshots $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git commit -m "snapshots + rows $(date -u +%Y-%m-%dT%H:%M:%SZ)"
             git push
           fi
