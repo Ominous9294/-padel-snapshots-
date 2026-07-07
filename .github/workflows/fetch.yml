@@ -28,11 +28,9 @@ on:
         required: false
         default: ""
 
-# Allow the job to push the new snapshots back to the repo.
 permissions:
   contents: write
 
-# If a run is still going when the next fires, don't stack them.
 concurrency:
   group: padel-fetch
   cancel-in-progress: false
@@ -46,7 +44,7 @@ jobs:
 
       - name: Fetch snapshots
         env:
-          TZ: Europe/London     # so "today"/"tomorrow" match Isle of Man dates
+          TZ: Europe/London
         run: |
           chmod +x ./fetch-ci.sh
           ./fetch-ci.sh
