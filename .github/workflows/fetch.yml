@@ -7,15 +7,15 @@ name: padel-fetch
 
 on:
   schedule:
-    # Times are UTC. GitHub cron is best-effort and can drift a few minutes,
-    # so these are set ~40 min before the tracker reads, with buffer.
-    - cron: "50 10 * * *"     # ~11:50 Europe/London (BST) — midday: AFTERNOON window, today
-    - cron: "50 21 * * *"     # ~22:50 Europe/London (BST) — evening: MORNING window, tomorrow
-    # Weekend belt-and-braces: GitHub cron reliability drops overnight on
-    # Fri/Sat/Sun and has silently missed 3 consecutive weekend evening runs
-    # (Jun 27/28, Jun 28/29, Jul 3/4). This second evening slot on Fri/Sat/Sun
-    # gives us two attempts to capture the next-day-morning window.
-    - cron: "50 19 * * 5,6,0" # ~20:50 Europe/London (BST), Fri/Sat/Sun — backup
+    # Times are UTC. GitHub cron is best-effort — often drifts by hours and
+    # sometimes skips entirely (~1-in-4 recent runs observed missed). Each
+    # window now has a primary + backup cron ~2 hours apart, giving two
+    # attempts per capture. compute_rows.py is idempotent — the second
+    # attempt is a no-op if the first succeeded.
+    - cron: "50 10 * * *"     # ~11:50 Europe/London (BST) — midday PRIMARY: AFTERNOON window, today
+    - cron: "50 12 * * *"     # ~13:50 Europe/London (BST) — midday BACKUP
+    - cron: "50 19 * * *"     # ~20:50 Europe/London (BST) — evening BACKUP: MORNING window, tomorrow
+    - cron: "50 21 * * *"     # ~22:50 Europe/London (BST) — evening PRIMARY
   workflow_dispatch:
     # Manual run: optionally force a specific window/date (otherwise auto by hour).
     inputs:
