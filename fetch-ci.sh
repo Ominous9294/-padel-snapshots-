@@ -1,21 +1,19 @@
 #!/usr/bin/env bash
 # Padel Tracker — Playtomic availability + events fetcher (CLOUD / GitHub Actions version)
-# Ubuntu-runner port of the local fetch.sh. GNU coreutils (date -d, stat -c).
+# Ubuntu-runner port. GNU coreutils (date -d, stat -c).
 # Writes raw JSON to ./snapshots and ./manifest.json in the repo root.
-# Now also captures SOCIAL EVENTS per club per day -> {date}_{id}_events.json:
-#   - tournaments     (api.playtomic.io/v1/tournaments)
-#   - academy classes (scraped from playtomic.com/clubs/{slug})
-# Zero external dependencies beyond curl + python3 (both on ubuntu-latest).
+# Captures SOCIAL EVENTS per club per day -> {date}_{id}_events.json:
+#   - tournaments      (api.playtomic.io/v1/tournaments)
+#   - academy classes  (api.playtomic.io/v1/lessons)
+# Zero external dependencies beyond curl + python3.
 
 set -euo pipefail
 IFS=$'\n\t'
 
-# Repo root by default; in Actions this is $GITHUB_WORKSPACE (the checkout).
 BASE_DIR="${BASE_DIR:-$(pwd)}"
 SNAP_DIR="$BASE_DIR/snapshots"
 mkdir -p "$SNAP_DIR"
 
-# id:tenant_id:slug — hardcoded literals from the tracking set, never user input.
 CLUBS=(
   "harrogate-spa:d6d04c01-6101-455f-8968-8de9f75bf384:harrogate-spa-tennis-centre"
   "surge-harrogate:18fda907-f989-4d40-b124-b8bf98ecbbd2:surge-padel-harrogate"
@@ -26,15 +24,21 @@ CLUBS=(
   "east-dorset:da25ad46-c6d2-4266-b9da-2a00863b1919:east-dorset-padel"
 )
 
-log() { echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] $*"; }   # -> stdout, captured by Actions
+log() { echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] $*"; }
 log "Run started (cloud) — TZ=${TZ:-unset}"
 
-# Dates in the workflow's TZ (set to Europe/London in the YAML).
 TODAY=$(date "+%Y-%m-%d")
-TOMORROW=$(date -d "+1 day" "+%Y-%m-%d")   # GNU date syntax (was -v+1d on macOS)
+TOMORROW=$(date -d "+1 day" "+%Y-%m-%d")
 
 is_uuid() { [[ "$1" =~ ^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$ ]]; }
 is_slug() { [[ "$1" =~ ^[a-z0-9-]+$ ]]; }
+
+# Refreshed 2026-07-15 after Cloudflare 403'd every request under the previous
+# Chrome-126 UA (all 14 availability + 14 events calls failed on Jul 15 midday).
+# Chrome 138 is current at time of writing. Also: added `sleep 1` between requests
+# so we look less like a bot burst (14 requests in <2s = classic fingerprint).
+# Bump this UA again next time Cloudflare updates its rules.
+BROWSER_UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
 
 # ---- Availability fetch loop ----------------------------------------------
 SUCCESS=0
@@ -57,28 +61,20 @@ for d in "$TODAY" "$TOMORROW"; do
     OUT="$SNAP_DIR/${d}_${id}.json"
     TMP="${OUT}.partial"
 
-    # Real-browser UA on api.playtomic.io too — Cloudflare started 403'ing the
-    # previous "PadelGardenTracker/1.0" UA on api subdomain on 2026-06-15
-    # (same heuristic that was already blocking the academy HTML scrape).
     HTTP_CODE=$(curl \
-      --proto "=https" \
-      --tlsv1.2 \
-      --max-time 20 \
-      --retry 2 --retry-delay 3 \
-      -sS \
-      --user-agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" \
+      --proto "=https" --tlsv1.2 --max-time 20 --retry 2 --retry-delay 3 -sS \
+      --user-agent "$BROWSER_UA" \
       -H "Accept: application/json, text/plain, */*" \
       -H "Accept-Language: en-GB,en;q=0.9" \
       -H "Origin: https://playtomic.com" \
       -H "Referer: https://playtomic.com/" \
-      -w "%{http_code}" \
-      -o "$TMP" \
-      "$URL" 2>&1 || echo "000")
+      -w "%{http_code}" -o "$TMP" "$URL" 2>&1 || echo "000")
 
     if [ "$HTTP_CODE" != "200" ]; then
       rm -f "$TMP"
       log "FAIL $d $id — HTTP $HTTP_CODE"
       FAILURE=$((FAILURE+1))
+      sleep 1
       continue
     fi
 
@@ -86,21 +82,19 @@ for d in "$TODAY" "$TOMORROW"; do
       rm -f "$TMP"
       log "FAIL $d $id — response was not valid JSON"
       FAILURE=$((FAILURE+1))
+      sleep 1
       continue
     fi
 
     mv "$TMP" "$OUT"
-    bytes=$(stat -c%s "$OUT")   # GNU stat (was stat -f%z on macOS)
+    bytes=$(stat -c%s "$OUT")
     log "OK   $d $id (${bytes} bytes)"
     SUCCESS=$((SUCCESS+1))
+    sleep 1
   done
 done
 
 # ---- Events fetch loop ----------------------------------------------------
-# Tournaments + academy classes are club-level lists already covering all
-# upcoming dates, so fetch ONCE per club and derive per-date counts.
-# Best-effort: event failures NEVER fail the build (availability is the SLA).
-# Output: one file per club per day -> {date}_{id}_events.json
 EV_OK=0
 EV_WARN=0
 
@@ -121,7 +115,7 @@ for entry in "${CLUBS[@]}"; do
   # --- Tournaments (JSON API) ---
   TURL="https://api.playtomic.io/v1/tournaments?tenant_id=${tid}&local_start_min=${TODAY}T00:00:00&local_start_max=${TOMORROW}T23:59:59"
   T_CODE=$(curl --proto "=https" --tlsv1.2 --max-time 20 --retry 2 --retry-delay 3 -sS \
-    --user-agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" \
+    --user-agent "$BROWSER_UA" \
     -H "Accept: application/json, text/plain, */*" \
     -H "Accept-Language: en-GB,en;q=0.9" \
     -H "Origin: https://playtomic.com" \
@@ -133,19 +127,12 @@ for entry in "${CLUBS[@]}"; do
     rm -f "$TOUR_TMP"
     log "WARN events $id — tournaments fetch failed (HTTP $T_CODE)"
   fi
+  sleep 1
 
-  # --- Academy classes (JSON API) ---
-  # The old approach scraped the playtomic.com/clubs/{slug} HTML page. That broke
-  # permanently (academy_ok=false every run): Cloudflare 403's GitHub Actions IPs,
-  # and the page is a client-rendered SPA so the class dates aren't even in the raw
-  # HTML. Replaced 2026-06-18 with the public no-auth JSON endpoint
-  # api.playtomic.io/v1/lessons — same host/family as availability+tournaments
-  # (works from the runner), returns the club's classes with the tournament_* schema
-  # and type=="CLASS". sort=start_date,DESC + size=500 puts any today/future classes
-  # first. We derive per-date counts below, mirroring the tournaments path.
+  # --- Academy classes (JSON API — /v1/lessons, confirmed 2026-06-18) ---
   AURL="https://api.playtomic.io/v1/lessons?tenant_id=${tid}&size=500&sort=start_date,DESC"
   A_CODE=$(curl --proto "=https" --tlsv1.2 --max-time 20 --retry 2 --retry-delay 3 -sS \
-    --user-agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" \
+    --user-agent "$BROWSER_UA" \
     -H "Accept: application/json, text/plain, */*" \
     -H "Accept-Language: en-GB,en;q=0.9" \
     -H "Origin: https://playtomic.com" \
@@ -157,6 +144,7 @@ for entry in "${CLUBS[@]}"; do
     rm -f "$ACAD_TMP"
     log "WARN events $id — academy (lessons) fetch failed (HTTP $A_CODE)"
   fi
+  sleep 1
 
   # --- Derive per-date counts and write event files ---
   if python3 - "$id" "$SNAP_DIR" "$TODAY" "$TOMORROW" "$TOUR_ARG" "$ACAD_ARG" <<'PY'
@@ -165,7 +153,7 @@ from datetime import datetime
 
 club_id, snap_dir, today, tomorrow, tour_path, acad_path = sys.argv[1:7]
 
-def load_tournaments(path):
+def load_list(path, extra_keys=()):
     if path == "NONE":
         return None
     try:
@@ -175,71 +163,39 @@ def load_tournaments(path):
     if isinstance(data, list):
         return data
     if isinstance(data, dict):
-        for k in ("tournaments", "data", "results", "items"):
+        for k in ("tournaments", "lessons", "classes", "data", "results", "items", *extra_keys):
             if isinstance(data.get(k), list):
                 return data[k]
     return []
 
-def tournament_start(t):
+def item_start(t):
     for k in ("start_date", "start_datetime", "starts_at", "start", "from"):
         v = t.get(k)
         if isinstance(v, str):
             return v
     return ""
 
-tours = load_tournaments(tour_path)
-
-# Academy classes come back from /v1/lessons with the SAME shape as tournaments
-# (a bare list, or wrapped). Each item has start_date, type ("CLASS") and
-# tournament_status. We reuse the tournament loaders and count active classes
-# (excluding CANCELLED) whose start_date falls on the target day.
-def load_lessons(path):
-    if path == "NONE":
-        return None
-    try:
-        data = json.load(open(path))
-    except Exception:
-        return None
-    if isinstance(data, list):
-        return data
-    if isinstance(data, dict):
-        for k in ("lessons", "classes", "data", "results", "items"):
-            if isinstance(data.get(k), list):
-                return data[k]
-    return []
-
-lessons = load_lessons(acad_path)
+tours = load_list(tour_path)
+lessons = load_list(acad_path)
 
 now_iso = datetime.now().astimezone().isoformat()
 
 for d in (today, tomorrow):
-    if tours is None:
-        t_count = None
-    else:
-        t_count = sum(1 for t in tours if isinstance(t, dict) and tournament_start(t).startswith(d))
-    if lessons is None:
-        a_count = None
-    else:
-        a_count = sum(
-            1 for c in lessons
-            if isinstance(c, dict)
-            and tournament_start(c).startswith(d)
-            and str(c.get("tournament_status", "")).upper() != "CANCELLED"
-        )
-    if t_count is None and a_count is None:
-        social = None
-    else:
-        social = (t_count or 0) + (a_count or 0)
+    t_count = None if tours is None else sum(
+        1 for t in tours if isinstance(t, dict) and item_start(t).startswith(d)
+    )
+    a_count = None if lessons is None else sum(
+        1 for c in lessons
+        if isinstance(c, dict)
+        and item_start(c).startswith(d)
+        and str(c.get("tournament_status", "")).upper() != "CANCELLED"
+    )
+    social = None if (t_count is None and a_count is None) else (t_count or 0) + (a_count or 0)
 
     rec = {
-        "club_id": club_id,
-        "date": d,
-        "fetched_iso": now_iso,
-        "tournament_count": t_count,
-        "academy_count": a_count,
-        "social_events": social,
-        "tournament_ok": tours is not None,
-        "academy_ok": lessons is not None,
+        "club_id": club_id, "date": d, "fetched_iso": now_iso,
+        "tournament_count": t_count, "academy_count": a_count, "social_events": social,
+        "tournament_ok": tours is not None, "academy_ok": lessons is not None,
     }
     out = os.path.join(snap_dir, f"{d}_{club_id}_events.json")
     tmp = out + ".partial"
@@ -258,8 +214,7 @@ PY
   fi
 done
 
-# ---- Manifest (same shape the tracker already reads; globs *.json so it ----
-# ---- now includes *_events.json automatically) ----------------------------
+# ---- Manifest ------------------------------------------------------------
 python3 - "$SNAP_DIR" "$BASE_DIR/manifest.json" <<'PY'
 import json, os, sys, glob
 from datetime import datetime, timezone
@@ -282,9 +237,6 @@ PY
 
 log "Run complete — availability success=$SUCCESS failure=$FAILURE | events ok=$EV_OK warn=$EV_WARN"
 
-# Fail the job loudly only if EVERYTHING failed (network/endpoint down),
-# so a single club outage doesn't spam you with red builds.
-# Events are best-effort and intentionally excluded from this gate.
 if [ "$SUCCESS" -eq 0 ]; then
   log "ERROR — zero successful fetches"
   exit 1
