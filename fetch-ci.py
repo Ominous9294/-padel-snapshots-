@@ -46,7 +46,7 @@ SLUG_RE = re.compile(r"^[a-z0-9-]+$")
 # "chrome" pins to curl_cffi's latest supported Chrome fingerprint. Bump to a
 # specific version like "chrome131" only if Cloudflare rolls out new detection
 # that requires an exact version match.
-IMPERSONATE = "chrome"
+IMPERSONATE = "chrome131"
 
 BROWSER_HEADERS = {
     "Accept": "application/json, text/plain, */*",
