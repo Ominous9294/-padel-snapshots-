@@ -17,7 +17,6 @@ on:
     - cron: "50 19 * * *"     # ~20:50 Europe/London (BST) — evening BACKUP: MORNING window, tomorrow
     - cron: "50 21 * * *"     # ~22:50 Europe/London (BST) — evening PRIMARY
   workflow_dispatch:
-    # Manual run: optionally force a specific window/date (otherwise auto by hour).
     inputs:
       window:
         description: "morning | afternoon (blank = auto by UTC hour)"
@@ -42,12 +41,20 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install curl_cffi
+        run: |
+          python3 -m pip install --quiet --upgrade "curl_cffi>=0.7"
+
       - name: Fetch snapshots
         env:
           TZ: Europe/London
         run: |
-          chmod +x ./fetch-ci.sh
-          ./fetch-ci.sh
+          python3 ./fetch-ci.py
 
       - name: Compute occupancy rows (point-in-time, at capture)
         env:
